@@ -1,0 +1,14 @@
+{
+  "name": "appstarter-with-skills",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "dev": "pnpm --filter @appstarter/web dev",
+    "build": "pnpm -r build",
+    "preview": "pnpm --filter @appstarter/web preview"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
