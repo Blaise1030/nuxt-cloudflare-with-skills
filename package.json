@@ -10,6 +10,6 @@
     "preview": "pnpm --filter @appstarter/web preview"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   }
 }
