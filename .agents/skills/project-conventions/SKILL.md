@@ -21,7 +21,7 @@ Composables call `$fetch`/`useFetch` only against this app's own `/api/*` routes
 
 ## Reference implementation
 
-See the `notes` feature for a worked example of every convention above:
+See the `notes` feature for a worked example of most conventions above (it only demonstrates create — apply the same success/error toast pattern from `addNote` in `useNotes.ts` to update/delete):
 - `apps/web/server/utils/notes-store.ts`, `apps/web/server/api/notes.get.ts`, `apps/web/server/api/notes.post.ts`
 - `apps/web/app/composables/useNotes.ts`
 - `apps/web/app/components/NoteCard.vue`
