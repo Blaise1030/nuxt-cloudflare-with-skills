@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     preset: 'cloudflare_module',
     cloudflare: {
       // Emulate staging bindings during local dev (`wrangler deploy --env staging` in CI)
-      wranglerEnv: 'staging',
+      dev: { environment: 'staging' },
     },
   },
 
