@@ -30,13 +30,13 @@ const stack = [
           </NuxtLink>
         </Button>
         <Button as-child variant="outline">
-          <a href="https://github.com/Blaise1030/appstarter-with-skills" target="_blank" rel="noopener">
+          <a href="https://github.com/Blaise1030/nuxt-cloudflare-with-skills" target="_blank" rel="noopener">
             GitHub
           </a>
         </Button>
       </div>
 
-      <pre class="bg-muted w-full max-w-md rounded-lg p-4 text-left text-sm"><code>git clone https://github.com/Blaise1030/appstarter-with-skills
+      <pre class="bg-muted w-full max-w-md rounded-lg p-4 text-left text-sm"><code>git clone https://github.com/Blaise1030/nuxt-cloudflare-with-skills
 pnpm install
 pnpm --filter @appstarter/web dev</code></pre>
 
@@ -54,7 +54,7 @@ pnpm --filter @appstarter/web dev</code></pre>
 
     <footer class="border-t p-6 text-center">
       <a
-        href="https://github.com/Blaise1030/appstarter-with-skills"
+        href="https://github.com/Blaise1030/nuxt-cloudflare-with-skills"
         target="_blank"
         rel="noopener"
         class="text-muted-foreground text-sm hover:underline"
