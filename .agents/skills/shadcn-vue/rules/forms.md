@@ -15,20 +15,20 @@
 
 Always use `FieldGroup` + `Field` — never raw `div` with `space-y-*`:
 
-```tsx
+```vue
 <FieldGroup>
   <Field>
-    <FieldLabel htmlFor="email">Email</FieldLabel>
+    <FieldLabel for="email">Email</FieldLabel>
     <Input id="email" type="email" />
   </Field>
   <Field>
-    <FieldLabel htmlFor="password">Password</FieldLabel>
+    <FieldLabel for="password">Password</FieldLabel>
     <Input id="password" type="password" />
   </Field>
 </FieldGroup>
 ```
 
-Use `Field orientation="horizontal"` for settings pages. Use `FieldLabel className="sr-only"` for visually hidden labels.
+Use `Field orientation="horizontal"` for settings pages. Use `FieldLabel class="sr-only"` for visually hidden labels.
 
 **Choosing form controls:**
 
@@ -38,7 +38,7 @@ Use `Field orientation="horizontal"` for settings pages. Use `FieldLabel classNa
 - Native HTML select (no JS) → `native-select`
 - Boolean toggle → `Switch` (for settings) or `Checkbox` (for forms)
 - Single choice from few options → `RadioGroup`
-- Toggle between 2–5 options → `ToggleGroup` + `ToggleGroupItem`
+- Toggle between 2–7 options → `ToggleGroup` + `ToggleGroupItem`
 - OTP/verification code → `InputOTP`
 - Multi-line text → `Textarea`
 
@@ -50,7 +50,7 @@ Never use raw `Input` or `Textarea` inside an `InputGroup`.
 
 **Incorrect:**
 
-```tsx
+```html
 <InputGroup>
   <Input placeholder="Search..." />
 </InputGroup>
@@ -58,12 +58,16 @@ Never use raw `Input` or `Textarea` inside an `InputGroup`.
 
 **Correct:**
 
-```tsx
+```js
+<script setup lang="ts">
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
+</script>
 
-<InputGroup>
-  <InputGroupInput placeholder="Search..." />
-</InputGroup>
+<template>
+  <InputGroup>
+    <InputGroupInput placeholder="Search..." />
+  </InputGroup>
+</template>
 ```
 
 ---
@@ -74,10 +78,10 @@ Never place a `Button` directly inside or adjacent to an `Input` with custom pos
 
 **Incorrect:**
 
-```tsx
-<div className="relative">
-  <Input placeholder="Search..." className="pr-10" />
-  <Button className="absolute right-0 top-0" size="icon">
+```html
+<div class="relative">
+  <Input placeholder="Search..." class="pr-10" />
+  <Button class="absolute right-0 top-0" size="icon">
     <SearchIcon />
   </Button>
 </div>
@@ -85,17 +89,21 @@ Never place a `Button` directly inside or adjacent to an `Input` with custom pos
 
 **Correct:**
 
-```tsx
+```js
+<script setup lang="ts">
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
+</script>
 
-<InputGroup>
-  <InputGroupInput placeholder="Search..." />
-  <InputGroupAddon>
-    <Button size="icon">
-      <SearchIcon data-icon="inline-start" />
-    </Button>
-  </InputGroupAddon>
-</InputGroup>
+<template>
+  <InputGroup>
+    <InputGroupInput placeholder="Search..." />
+    <InputGroupAddon>
+      <Button size="icon">
+        <SearchIcon data-icon="inline-start" />
+      </Button>
+    </InputGroupAddon>
+  </InputGroup>
+</template>
 ```
 
 ---
@@ -106,40 +114,48 @@ Don't manually loop `Button` components with active state.
 
 **Incorrect:**
 
-```tsx
-const [selected, setSelected] = useState("daily")
+```js
+<script setup lang="ts">
+const selected = ref("daily")
+const options = ["daily", "weekly", "monthly"]
+</script>
 
-<div className="flex gap-2">
-  {["daily", "weekly", "monthly"].map((option) => (
+<template>
+  <div class="flex gap-2">
     <Button
-      key={option}
-      variant={selected === option ? "default" : "outline"}
-      onClick={() => setSelected(option)}
+      v-for="option in options"
+      :key="option"
+      :variant="selected === option ? 'default' : 'outline'"
+      @click="selected = option"
     >
-      {option}
+      {{ option }}
     </Button>
-  ))}
-</div>
+  </div>
+</template>
 ```
 
 **Correct:**
 
-```tsx
+```js
+<script setup lang="ts">
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+</script>
 
-<ToggleGroup spacing={2}>
-  <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
-  <ToggleGroupItem value="weekly">Weekly</ToggleGroupItem>
-  <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
-</ToggleGroup>
+<template>
+  <ToggleGroup spacing="2">
+    <ToggleGroupItem value="daily">Daily</ToggleGroupItem>
+    <ToggleGroupItem value="weekly">Weekly</ToggleGroupItem>
+    <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
+  </ToggleGroup>
+</template>
 ```
 
 Combine with `Field` for labelled toggle groups:
 
-```tsx
+```html
 <Field orientation="horizontal">
   <FieldTitle id="theme-label">Theme</FieldTitle>
-  <ToggleGroup aria-labelledby="theme-label" spacing={2}>
+  <ToggleGroup aria-labelledby="theme-label" spacing="2">
     <ToggleGroupItem value="light">Light</ToggleGroupItem>
     <ToggleGroupItem value="dark">Dark</ToggleGroupItem>
     <ToggleGroupItem value="system">System</ToggleGroupItem>
@@ -147,7 +163,6 @@ Combine with `Field` for labelled toggle groups:
 </Field>
 ```
 
-> **Note:** `defaultValue` and `type`/`multiple` props differ between base and radix. See [base-vs-radix.md](./base-vs-radix.md#togglegroup).
 
 ---
 
@@ -155,14 +170,14 @@ Combine with `Field` for labelled toggle groups:
 
 Use `FieldSet` + `FieldLegend` for related checkboxes, radios, or switches — not `div` with a heading:
 
-```tsx
+```html
 <FieldSet>
   <FieldLegend variant="label">Preferences</FieldLegend>
   <FieldDescription>Select all that apply.</FieldDescription>
-  <FieldGroup className="gap-3">
+  <FieldGroup class="gap-3">
     <Field orientation="horizontal">
       <Checkbox id="dark" />
-      <FieldLabel htmlFor="dark" className="font-normal">Dark mode</FieldLabel>
+      <FieldLabel for="dark" class="font-normal">Dark mode</FieldLabel>
     </Field>
   </FieldGroup>
 </FieldSet>
@@ -174,17 +189,17 @@ Use `FieldSet` + `FieldLegend` for related checkboxes, radios, or switches — n
 
 Both attributes are needed — `data-invalid`/`data-disabled` styles the field (label, description), while `aria-invalid`/`disabled` styles the control.
 
-```tsx
-// Invalid.
+```html
+<!-- Invalid. -->
 <Field data-invalid>
-  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <FieldLabel for="email">Email</FieldLabel>
   <Input id="email" aria-invalid />
   <FieldDescription>Invalid email address.</FieldDescription>
 </Field>
 
-// Disabled.
+<!-- Disabled. -->
 <Field data-disabled>
-  <FieldLabel htmlFor="email">Email</FieldLabel>
+  <FieldLabel for="email">Email</FieldLabel>
   <Input id="email" disabled />
 </Field>
 ```

@@ -1,6 +1,6 @@
 # Icons
 
-**Always use the project's configured `iconLibrary` for imports.** Check the `iconLibrary` field from project context: `lucide` → `lucide-react`, `tabler` → `@tabler/icons-react`, etc. Never assume `lucide-react`.
+**Always use the project's configured `iconLibrary` for imports.** Check the `iconLibrary` field from project context: `lucide` → `@lucide/vue`, `tabler` → `@tabler/icons-vue`, etc. Never assume `@lucide/vue`.
 
 ---
 
@@ -10,16 +10,16 @@ Add `data-icon="inline-start"` (prefix) or `data-icon="inline-end"` (suffix) to 
 
 **Incorrect:**
 
-```tsx
+```html
 <Button>
-  <SearchIcon className="mr-2 size-4" />
+  <SearchIcon class="mr-2 size-4" />
   Search
 </Button>
 ```
 
 **Correct:**
 
-```tsx
+```html
 <Button>
   <SearchIcon data-icon="inline-start"/>
   Search
@@ -39,21 +39,21 @@ Components handle icon sizing via CSS. Don't add `size-4`, `w-4 h-4`, or other s
 
 **Incorrect:**
 
-```tsx
+```html
 <Button>
-  <SearchIcon className="size-4" data-icon="inline-start" />
+  <SearchIcon class="size-4" data-icon="inline-start" />
   Search
 </Button>
 
 <DropdownMenuItem>
-  <SettingsIcon className="mr-2 size-4" />
+  <SettingsIcon class="mr-2 size-4" />
   Settings
 </DropdownMenuItem>
 ```
 
 **Correct:**
 
-```tsx
+```html
 <Button>
   <SearchIcon data-icon="inline-start" />
   Search
@@ -69,33 +69,43 @@ Components handle icon sizing via CSS. Don't add `size-4`, `w-4 h-4`, or other s
 
 ## Pass icons as component objects, not string keys
 
-Use `icon={CheckIcon}`, not a string key to a lookup map.
+Use `:icon="CheckIcon"`, not a string key to a lookup map.
 
 **Incorrect:**
 
-```tsx
+```js
+<script setup lang="ts">
 const iconMap = {
   check: CheckIcon,
   alert: AlertIcon,
 }
 
-function StatusBadge({ icon }: { icon: string }) {
-  const Icon = iconMap[icon]
-  return <Icon />
-}
+defineProps({
+  icon: String
+})
+</script>
 
-<StatusBadge icon="check" />
+<template>
+  <component :is="iconMap[icon]" />
+</template>
 ```
 
 **Correct:**
 
-```tsx
-// Import from the project's configured iconLibrary (e.g. lucide-react, @tabler/icons-react).
-import { CheckIcon } from "lucide-react"
+```js
+<script setup lang="ts">
+// Import from the project's configured iconLibrary (e.g. @lucide/vue, @tabler/icons-vue).
+import { CheckIcon } from "@lucide/vue"
 
-function StatusBadge({ icon: Icon }: { icon: React.ComponentType }) {
-  return <Icon />
-}
+defineProps({
+  icon: Object // Or Component
+})
+</script>
 
-<StatusBadge icon={CheckIcon} />
+<template>
+  <component :is="icon" />
+</template>
+
+<!-- Usage -->
+<StatusBadge :icon="CheckIcon" />
 ```

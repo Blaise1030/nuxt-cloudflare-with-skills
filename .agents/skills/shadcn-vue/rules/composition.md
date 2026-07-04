@@ -5,7 +5,7 @@
 - Items always inside their Group component
 - Callouts use Alert
 - Empty states use Empty component
-- Toast notifications use sonner
+- Toast notifications use vue-sonner
 - Choosing between overlay components
 - Dialog, Sheet, and Drawer always need a Title
 - Card structure
@@ -24,7 +24,7 @@ Never render items directly inside the content container.
 
 **Incorrect:**
 
-```tsx
+```html
 <SelectContent>
   <SelectItem value="apple">Apple</SelectItem>
   <SelectItem value="banana">Banana</SelectItem>
@@ -33,7 +33,7 @@ Never render items directly inside the content container.
 
 **Correct:**
 
-```tsx
+```html
 <SelectContent>
   <SelectGroup>
     <SelectItem value="apple">Apple</SelectItem>
@@ -56,7 +56,7 @@ This applies to all group-based components:
 
 ## Callouts use Alert
 
-```tsx
+```html
 <Alert>
   <AlertTitle>Warning</AlertTitle>
   <AlertDescription>Something needs attention.</AlertDescription>
@@ -67,7 +67,7 @@ This applies to all group-based components:
 
 ## Empty states use Empty component
 
-```tsx
+```html
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon"><FolderIcon /></EmptyMedia>
@@ -82,16 +82,18 @@ This applies to all group-based components:
 
 ---
 
-## Toast notifications use sonner
+## Toast notifications use vue-sonner
 
-```tsx
-import { toast } from "sonner"
+```js
+<script setup lang="ts">
+import { toast } from "vue-sonner"
 
 toast.success("Changes saved.")
 toast.error("Something went wrong.")
 toast("File deleted.", {
   action: { label: "Undo", onClick: () => undoDelete() },
 })
+</script>
 ```
 
 ---
@@ -111,9 +113,9 @@ toast("File deleted.", {
 
 ## Dialog, Sheet, and Drawer always need a Title
 
-`DialogTitle`, `SheetTitle`, `DrawerTitle` are required for accessibility. Use `className="sr-only"` if visually hidden.
+`DialogTitle`, `SheetTitle`, `DrawerTitle` are required for accessibility. Use `class="sr-only"` if visually hidden.
 
-```tsx
+```vue
 <DialogContent>
   <DialogHeader>
     <DialogTitle>Edit Profile</DialogTitle>
@@ -129,7 +131,7 @@ toast("File deleted.", {
 
 Use full composition — don't dump everything into `CardContent`:
 
-```tsx
+```html
 <Card>
   <CardHeader>
     <CardTitle>Team Members</CardTitle>
@@ -148,7 +150,7 @@ Use full composition — don't dump everything into `CardContent`:
 
 Compose with `Spinner` + `data-icon` + `disabled`:
 
-```tsx
+```html
 <Button disabled>
   <Spinner data-icon="inline-start" />
   Saving...
@@ -161,8 +163,8 @@ Compose with `Spinner` + `data-icon` + `disabled`:
 
 Never render `TabsTrigger` directly inside `Tabs` — always wrap in `TabsList`:
 
-```tsx
-<Tabs defaultValue="account">
+```html
+<Tabs default-value="account">
   <TabsList>
     <TabsTrigger value="account">Account</TabsTrigger>
     <TabsTrigger value="password">Password</TabsTrigger>
@@ -177,7 +179,7 @@ Never render `TabsTrigger` directly inside `Tabs` — always wrap in `TabsList`:
 
 Always include `AvatarFallback` for when the image fails to load:
 
-```tsx
+```html
 <Avatar>
   <AvatarImage src="/avatar.png" alt="User" />
   <AvatarFallback>JD</AvatarFallback>
@@ -190,6 +192,6 @@ Always include `AvatarFallback` for when the image fails to load:
 
 | Instead of | Use |
 |---|---|
-| `<hr>` or `<div className="border-t">` | `<Separator />` |
-| `<div className="animate-pulse">` with styled divs | `<Skeleton className="h-4 w-3/4" />` |
-| `<span className="rounded-full bg-green-100 ...">` | `<Badge variant="secondary">` |
+| `<hr>` or `<div class="border-t">` | `<Separator />` |
+| `<div class="animate-pulse">` with styled divs | `<Skeleton class="h-4 w-3/4" />` |
+| `<span class="rounded-full bg-green-100 ...">` | `<Badge variant="secondary">` |

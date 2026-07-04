@@ -6,7 +6,7 @@ See [customization.md](../customization.md) for theming, CSS variables, and addi
 
 - Semantic colors
 - Built-in variants first
-- className for layout only
+- class for layout only
 - No space-x-* / space-y-*
 - Prefer size-* over w-* h-* when equal
 - Prefer truncate shorthand
@@ -20,17 +20,17 @@ See [customization.md](../customization.md) for theming, CSS variables, and addi
 
 **Incorrect:**
 
-```tsx
-<div className="bg-blue-500 text-white">
-  <p className="text-gray-600">Secondary text</p>
+```html
+<div class="bg-blue-500 text-white">
+  <p class="text-gray-600">Secondary text</p>
 </div>
 ```
 
 **Correct:**
 
-```tsx
-<div className="bg-primary text-primary-foreground">
-  <p className="text-muted-foreground">Secondary text</p>
+```html
+<div class="bg-primary text-primary-foreground">
+  <p class="text-muted-foreground">Secondary text</p>
 </div>
 ```
 
@@ -42,18 +42,18 @@ For positive, negative, or status indicators, use Badge variants, semantic token
 
 **Incorrect:**
 
-```tsx
-<span className="text-emerald-600">+20.1%</span>
-<span className="text-green-500">Active</span>
-<span className="text-red-600">-3.2%</span>
+```html
+<span class="text-emerald-600">+20.1%</span>
+<span class="text-green-500">Active</span>
+<span class="text-red-600">-3.2%</span>
 ```
 
 **Correct:**
 
-```tsx
+```html
 <Badge variant="secondary">+20.1%</Badge>
 <Badge>Active</Badge>
-<span className="text-destructive">-3.2%</span>
+<span class="text-destructive">-3.2%</span>
 ```
 
 If you need a success/positive color that doesn't exist as a semantic token, use a Badge variant or ask the user about adding a custom CSS variable to the theme (see [customization.md](../customization.md)).
@@ -64,36 +64,36 @@ If you need a success/positive color that doesn't exist as a semantic token, use
 
 **Incorrect:**
 
-```tsx
-<Button className="border border-input bg-transparent hover:bg-accent">
+```html
+<Button class="border border-input bg-transparent hover:bg-accent">
   Click me
 </Button>
 ```
 
 **Correct:**
 
-```tsx
+```html
 <Button variant="outline">Click me</Button>
 ```
 
 ---
 
-## className for layout only
+## class for layout only
 
-Use `className` for layout (e.g. `max-w-md`, `mx-auto`, `mt-4`), **not** for overriding component colors or typography. To change colors, use semantic tokens, built-in variants, or CSS variables.
+Use `class` for layout (e.g. `max-w-md`, `mx-auto`, `mt-4`), **not** for overriding component colors or typography. To change colors, use semantic tokens, built-in variants, or CSS variables.
 
 **Incorrect:**
 
-```tsx
-<Card className="bg-blue-100 text-blue-900 font-bold">
+```html
+<Card class="bg-blue-100 text-blue-900 font-bold">
   <CardContent>Dashboard</CardContent>
 </Card>
 ```
 
 **Correct:**
 
-```tsx
-<Card className="max-w-md mx-auto">
+```html
+<Card class="max-w-md mx-auto">
   <CardContent>Dashboard</CardContent>
 </Card>
 ```
@@ -109,8 +109,8 @@ To customize a component's appearance, prefer these approaches in order:
 
 Use `gap-*` instead. `space-y-4` → `flex flex-col gap-4`. `space-x-2` → `flex gap-2`.
 
-```tsx
-<div className="flex flex-col gap-4">
+```html
+<div class="flex flex-col gap-4">
   <Input />
   <Input />
   <Button>Submit</Button>
@@ -139,20 +139,24 @@ Use semantic tokens — they handle light/dark via CSS variables. `bg-background
 
 ## Use cn() for conditional classes
 
-Use the `cn()` utility from the project for conditional or merged class names. Don't write manual ternaries in className strings.
+Use the `cn()` utility from the project for conditional or merged class names. Don't write manual ternaries in class strings.
 
 **Incorrect:**
 
-```tsx
-<div className={`flex items-center ${isActive ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+```html
+<div :class="`flex items-center ${isActive ? 'bg-primary text-primary-foreground' : 'bg-muted'}`">
 ```
 
 **Correct:**
 
-```tsx
+```js
+<script setup lang="ts">
 import { cn } from "@/lib/utils"
+</script>
 
-<div className={cn("flex items-center", isActive ? "bg-primary text-primary-foreground" : "bg-muted")}>
+<template>
+  <div :class="cn('flex items-center', isActive ? 'bg-primary text-primary-foreground' : 'bg-muted')">
+</template>
 ```
 
 ---

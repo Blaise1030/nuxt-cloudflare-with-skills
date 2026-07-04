@@ -10,7 +10,7 @@ Components reference semantic CSS variable tokens. Change the variables to chang
 - Changing the theme (presets, CSS variables)
 - Adding custom colors (Tailwind v3 and v4)
 - Border radius
-- Customizing components (variants, className, wrappers)
+- Customizing components (variants, class, wrappers)
 - Checking for updates
 
 ---
@@ -49,14 +49,16 @@ Colors use OKLCH: `--primary: oklch(0.205 0 0)` where values are lightness (0–
 
 ## Dark Mode
 
-Class-based toggle via `.dark` on the root element. In Next.js, use `next-themes`:
+Class-based toggle via `.dark` on the root element. In Nuxt, use `@nuxtjs/color-mode`:
 
-```tsx
-import { ThemeProvider } from "next-themes"
-
-<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-  {children}
-</ThemeProvider>
+```js
+<!-- nuxt.config.ts -->
+export default defineNuxtConfig({
+  modules: ['@nuxtjs/color-mode'],
+  colorMode: {
+    classSuffix: ''
+  }
+})
 ```
 
 ---
@@ -64,20 +66,20 @@ import { ThemeProvider } from "next-themes"
 ## Changing the Theme
 
 ```bash
-# Apply a preset code from ui.shadcn.com.
-npx shadcn@latest apply --preset a2r6bw
+# Apply a preset code from shadcn-vue.com.
+npx shadcn-vue@latest apply --preset a2r6bw
 
 # Positional shorthand also works.
-npx shadcn@latest apply a2r6bw
+npx shadcn-vue@latest apply a2r6bw
 
 # Switch to a named preset and overwrite existing components.
-npx shadcn@latest apply --preset nova
+npx shadcn-vue@latest apply --preset nova
 
 # Preserve existing components instead.
-npx shadcn@latest init --preset nova --force --no-reinstall
+npx shadcn-vue@latest init --preset nova --force --no-reinstall
 
 # Use a custom theme URL.
-npx shadcn@latest apply --preset "https://ui.shadcn.com/init?base=radix&style=nova&theme=blue&..."
+npx shadcn-vue@latest apply --preset "https://shadcn-vue.com/init?base=reka&style=nova&..."
 ```
 
 Or edit CSS variables directly in `globals.css`.
@@ -86,7 +88,7 @@ Or edit CSS variables directly in `globals.css`.
 
 ## Adding Custom Colors
 
-Add variables to the file at `tailwindCssFile` from `npx shadcn@latest info` (typically `globals.css`). Never create a new CSS file for this.
+Add variables to the file at `tailwindCssFile` from `npx shadcn-vue@latest info` (typically `globals.css`). Never create a new CSS file for this.
 
 ```css
 /* 1. Define in the global CSS file. */
@@ -108,7 +110,7 @@ Add variables to the file at `tailwindCssFile` from `npx shadcn@latest info` (ty
 }
 ```
 
-When `tailwindVersion` is `"v3"` (check via `npx shadcn@latest info`), register in `tailwind.config.js` instead:
+When `tailwindVersion` is `"v3"` (check via `npx shadcn-vue@latest info`), register in `tailwind.config.js` instead:
 
 ```js
 // 2b. Register with Tailwind v3 (tailwind.config.js).
@@ -125,9 +127,9 @@ module.exports = {
 }
 ```
 
-```tsx
-// 3. Use in components.
-<div className="bg-warning text-warning-foreground">Warning</div>
+```html
+<!-- 3. Use in components. -->
+<div class="bg-warning text-warning-foreground">Warning</div>
 ```
 
 ---
@@ -146,64 +148,58 @@ Prefer these approaches in order:
 
 ### 1. Built-in variants
 
-```tsx
+```html
 <Button variant="outline" size="sm">
   Click
 </Button>
 ```
 
-### 2. Tailwind classes via `className`
+### 2. Tailwind classes via `class`
 
-```tsx
-<Card className="mx-auto max-w-md">...</Card>
+```html
+<Card class="mx-auto max-w-md">...</Card>
 ```
 
 ### 3. Add a new variant
 
 Edit the component source to add a variant via `cva`:
 
-```tsx
-// components/ui/button.tsx
+```js
+// components/ui/Button.vue (or similar)
 warning: "bg-warning text-warning-foreground hover:bg-warning/90",
 ```
 
 ### 4. Wrapper components
 
-Compose shadcn/ui primitives into higher-level components:
+Compose shadcn-vue primitives into higher-level components:
 
-```tsx
-export function ConfirmDialog({ title, description, onConfirm, children }) {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Confirm</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  )
-}
-```
+```js
+<script setup lang="ts">
+defineProps<{
+  title: string
+  description: string
+}>()
 
----
+const emit = defineEmits(['confirm'])
+</script>
 
-## Checking for Updates
-
-```bash
-npx shadcn@latest add button --diff
-```
-
-To preview exactly what would change before updating, use `--dry-run` and `--diff`:
-
-```bash
-npx shadcn@latest add button --dry-run        # see all affected files
-npx shadcn@latest add button --diff button.tsx # see the diff for a specific file
+<template>
+  <AlertDialog>
+    <AlertDialogTrigger as-child>
+      <slot />
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>{{ title }}</AlertDialogTitle>
+        <AlertDialogDescription>{{ description }}</AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction @click="emit('confirm')">Confirm</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</template>
 ```
 
 See [Updating Components in SKILL.md](./SKILL.md#updating-components) for the full smart merge workflow.
