@@ -33,7 +33,14 @@ pnpm --filter @appstarter/web deploy:preview
 pnpm --filter @appstarter/web deploy:production
 ```
 
-CI (`.github/workflows/ci.yml`, `cd.yml`) builds and deploys automatically — preview deploys per PR, production on release.
+## CI/CD
+
+Two GitHub Actions workflows run against this repo:
+
+- **CI** (`.github/workflows/ci.yml`) — on every push/PR to `main`: install, lint, typecheck, test, and build the whole workspace.
+- **CD** (`.github/workflows/cd.yml`) — deploys to Cloudflare Workers:
+  - On each PR, uploads a Workers preview version (`wrangler versions upload --env preview`) and comments the preview URL on the PR.
+  - On a published GitHub release, deploys the release tag to the production Worker (`wrangler deploy --env production`).
 
 ## Using this as a template
 
